@@ -1,6 +1,6 @@
 import React from 'react'
 
-const url = require('../Assets/error_message.jpg')
+const url = require('../../assets/error_message.jpg')
 
 const PageNotFound = () => (
     <section style={{

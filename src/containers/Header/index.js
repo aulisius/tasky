@@ -10,17 +10,15 @@ import {
     FlatButton
 } from 'material-ui'
 
-import Hidden from '../Components/Hidden.jsx'
+import Hidden from '../../components/Hidden.jsx'
 
-import UserService from '../../Services/userService'
+import UserService from '../../services/userService'
 
 const user = new UserService()
 
 class Header extends React.Component {
     constructor(props) {
         super(props)
-
-
 
         this.state = {
             loggedIn: false,

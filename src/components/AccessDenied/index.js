@@ -1,6 +1,6 @@
 import React from 'react'
 
-const url = require('../Assets/access_denied.jpg')
+const url = require('../../assets/access_denied.jpg')
 
 const AccessDenied = () => (
     <section style={{

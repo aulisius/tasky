@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: './src/index.jsx',
@@ -8,11 +9,11 @@ module.exports = {
         filename: 'bundle.js',
         publicPath: '/'
     },
-    devtool: 'source-map',
+    devtool: 'eval-source-map',
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
+                test: /\.js$/,
                 loaders: ['babel'],
                 exclude: path.join(__dirname, 'node_modules')
             },
@@ -32,7 +33,21 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('production')
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new HtmlWebpackPlugin({
+            title: 'Tasky',
+            inject: false,
+            template: require('html-webpack-template'),
+            appMountId: 'app',
+            mobile: true
+            // window: {
+            //     env: {
+            //         apiHost: 'http://myapi.com/api/v1'
+            //     }
+            // }
         })
     ]
 }
