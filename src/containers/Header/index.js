@@ -10,12 +10,12 @@ import {
     FlatButton
 } from 'material-ui'
 
-import Hidden from '../../components/Hidden.jsx'
+import Hidden from '../../components/Hidden'
 
-import UserService from '../../services/userService'
+import userService from '../../services/userService'
 
-const user = new UserService()
 
+//TODO check prefixer.js and file issue if needed
 class Header extends React.Component {
     constructor(props) {
         super(props)
@@ -31,73 +31,96 @@ class Header extends React.Component {
 
         this.gotoLocation = this.gotoLocation.bind(this)
         this.loginFB = this.loginFB.bind(this)
+        this.logoutFB = this.logoutFB.bind(this);
     }
 
     componentWillMount() {
-        FB.getLoginStatus((response) => {
-            switch (response.status) {
-                    case 'connected':
-                        FB.api('/me?fields=email', ({email}) => {
-                            user.getUser(email)
-                            .then((user) => {
-                                this.setState({
-                                    user: user,
-                                    loggedIn: true
-                                })
-                            })
+        // FB.getLoginStatus((response) => {
+        //     switch (response.status) {
+        //             case 'connected':
+        //                 FB.api('/me?fields=email', ({email}) => {
+        //                     userService.getUser(email)
+        //                     .then((user) => {
+        //                         this.setState({
+        //                             user: user,
+        //                             loggedIn: true
+        //                         })
+        //                     })
 
-                        })
-                        break
-                    case 'not_authorized':
-                    default:
-            }
-        })
+        //                 })
+        //                 break
+        //             case 'not_authorized':
+        //             default:
+        //                 console.log('not logged in')
+        //     }
+        // })
     }
 
     loginFB() {
         FB.login(response => {
             switch (response.status) {
                     case 'connected':
-                        FB.api('/me?fields=first_name,email,picture.type(small)', ({first_name, picture, email, id}) => {
-                            user.addUser({
-                                name: first_name,
-                                email: email,
-                                id: id,
-                                picture: picture.data.url
+                        FB.api('/me?fields=name,email,picture.type(normal)', (node) => {
+                            console.log(node)
+                            userService.getUser(node.email)
+                            .then((data) => {
+                                if (data) {
+                                    return data
+                                } else {
+                                    return userService.addUser(node)
+                                }
                             })
                             .then((user) => {
                                 this.setState({
-                                    user: user,
+                                    user: {
+                                        name: node.name,
+                                        picture: node.picture.data.url,
+                                        email: node.email
+                                    },
                                     loggedIn: true
                                 })
                             })
                         })
                         break
                     case 'not_authorized':
-                        console.log('Please login to continue')
-                        break
                     default:
-                        console.log('Login into Facebook')
+                        console.log('Some Error occured. Try loggin in again.')
                         break
             }
             console.log(response)
         }, { scope: 'public_profile,email' })
     }
 
-    gotoLocation(location, title) {
+    logoutFB() {
+        FB.logout(response => {
+            console.log('Logged out')
+            this.setState({
+                loggedIn: false
+            })
+        })
+    }
+
+    gotoLocation(location) {
         this.context.router.push(location)
     }
 
     render() {
 
-        let rightMenu = <FlatButton label="Login" default={true} onClick={this.loginFB}/>
+        // let rightMenu = <FlatButton label="Login" default={true} onClick={this.loginFB}/>
+
+        // let logoutMenu = [
+        //     <FlatButton label="Home" default={true} onClick={this.gotoLocation('/home')}/>,
+        //     <FlatButton label="Logout" default={true} onClick={this.logoutFB}/>
+        // ]
+
+        let {loggedIn} = this.state
 
         return (
             <div>
                 <AppBar
                     title="Tasky"
                     iconElementLeft	= { <IconButton></IconButton> }
-                    iconElementRight = { rightMenu }
+                    iconElementRight = { <button /> }
                     />
                 {this.props.children}
             </div>

@@ -1,15 +1,15 @@
-import HTTP from 'http-with-fetch'
+import HTTP from './fetch'
 
-class userService extends HTTP {
-    constructor() {
-        super('/api/users');
+class UserService extends HTTP {
+    constructor(base) {
+        super(base);
         this.addUser = this.addUser.bind(this)
         this.getUsers = this.getUsers.bind(this)
         this.getUser = this.getUser.bind(this)
     }
 
     addUser(data) {
-        return this.post('/', JSON.stringify(data), this.add('headers', {'content-type': 'application/json'}))
+        return this.post('/', JSON.stringify(data), 'json', this.add('headers', {'content-type': 'application/json'}))
     }
 
     getUser(email) {
@@ -21,5 +21,7 @@ class userService extends HTTP {
     }
 
 }
+
+let userService = new UserService('/api/users')
 
 export default userService

@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Task manager for small teams",
   "scripts": {
+    "start": "node server/app.js",
     "build:dev": "webpack --config webpack.dev.js",
     "build:prod": "webpack --config webpack.prod.js",
-    "storybook": "start-storybook -p 6767"
+    "start:book": "start-storybook -p 6767",
+    "deploy:book": "storybook-to-ghpages"
   },
   "author": {
     "name": "N. Md Faizaan",
@@ -30,6 +32,8 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^1.1.0",
+    "@kadira/storybook-deployer": "^1.1.0",
+    "autoprefixer": "^6.4.0",
     "babel-core": "^6.13.2",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.4",
@@ -38,9 +42,12 @@
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-1": "^6.13.0",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.22.0",
     "html-webpack-template": "^5.0.0",
+    "postcss-loader": "^0.10.1",
+    "raw-loader": "^0.5.1",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
@@ -63,6 +70,7 @@
     "pg-promise": "^5.3.1",
     "react": "15.3.0",
     "react-addons-create-fragment": "^15.3.0",
+    "react-css-modules": "^3.7.10",
     "react-dom": "15.3.0",
     "react-router": "2.6.1"
   }

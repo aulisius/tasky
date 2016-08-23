@@ -13,14 +13,25 @@ const Koa = require('koa')
 const Router = require('koa-router')
 
 let router = new Router()
-
 let app = new Koa()
 
-router.get('*', ctx => send(ctx, path.join(__dirname, '../public/index.html')))
+router.get('*', (ctx, next) => {
+    return send(ctx, path.join(__dirname, '..', 'index.html')).then(() => next())
 
-app.use(serve(path.join(__dirname + '../public')))
-    .use(logger())
+})
+
+const conditional = (ctx, next) => next().then(() => {
+    console.log('MW')
+    if (ctx.fresh) {
+        ctx.status = 304
+        ctx.body = null
+    }
+})
+
+app.use(logger())
+    .use(serve(path.join(__dirname, '../public')))
     .use(convert(bodyParser()))
+    .use(conditional)
     .use(tasks.routes())
     .use(users.routes())
     .use(router.routes())

@@ -1,9 +1,11 @@
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+
 module.exports = {
     module: {
         loaders: [
             {
                 test: /\.css?$/,
-                loaders: 'style-loader!css-loader'
+                loaders: [ 'style', 'css', 'postcss' ]
             },
             {
                 test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -14,5 +16,8 @@ module.exports = {
                 loader: 'file-loader'
             }
         ]
-    }
+    },
+    postcss: [
+        require('autoprefixer')
+    ]
 }

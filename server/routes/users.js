@@ -7,7 +7,7 @@ const db = require('./db')
 router.post(
     '/',
     ctx => db.users
-        .add(ctx.request.body)
+        .add(JSON.parse(ctx.request.body))
         .then(() => ctx.status = 201)
         .catch(console.error)
 )
@@ -22,10 +22,10 @@ router.get(
 
 router.get(
     '/:email',
-    (ctx, next) => next().then(() => ctx.status = 200),
     ctx => db.users
         .findByEmail(ctx.params.email)
         .then(data => ctx.body = data)
+        .then(() => ctx.status = 200)
         .catch(console.error)
 )
 
