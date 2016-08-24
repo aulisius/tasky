@@ -5,8 +5,8 @@ import TaskHeader from '../TaskHeader'
 import Contributors from '../Contributors'
 
 const style = {
-    task: {
-        boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)',
+    taskMini: {
+        boxShadow: '4px 4px 8px 4px rgba(0,0,0,0.2)',
         display: 'inline-block',
         borderRadius: '5%',
         width: '320px',
@@ -14,15 +14,36 @@ const style = {
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         padding: '10px'
+    },
+    taskFull: {
+        boxShadow: '4px 4px 8px 4px rgba(0,0,0,0.2)',
+        width: '640px',
+        padding: '50px'
+    },
+    btn: {
+        float: 'left'
     }
 }
 
-const Task = (props) => (
-    <div style={style.task}>
-        <TaskHeader {...props} />
-        <hr/>
-        <Contributors users={props.contributors} />
-    </div>
-)
+const Task = (props) => {
+
+    const miniView = (
+        <div style={style.taskMini}>
+            <TaskHeader {...props} />
+            <hr/>
+            <button style={style.btn} > Status </button>
+            <Contributors users={props.contributors} />
+        </div>
+    )
+
+    const fullView = (
+        <div style={style.taskFull}>
+            <TaskHeader {...props} />
+            <hr />
+        </div>
+    )
+
+    return props.full ? fullView : miniView
+}
 
 export default Task

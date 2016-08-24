@@ -6,7 +6,7 @@ const Alternate = ({
     original
 }) => {
     const children = alter ? alternate : original
-    return <div> {children} </div>
+    return alter ? alternate : original
 }
 
 Alternate.propTypes = {

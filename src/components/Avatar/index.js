@@ -1,17 +1,22 @@
 import React from 'react'
 
 const style = {
-    'border-radius': '20%'
+    borderRadius: '20%',
+    objectFit: 'cover'
 }
 
-const Avatar = ({name, picture, size = 64}) => (
-    <img
-        width={`${size}px`}
-        height={`${size}px`}
-        style={style}
-        src={picture}
-        alt={name}
-    />
-)
+const Avatar = ({name, picture, size = 64, full = false}) => {
+
+    const mini = (
+        <img
+            width={`${size}px`}
+            height={`${size}px`}
+            style={style}
+            src={picture}
+            alt={name}
+            />)
+
+    return mini
+}
 
 export default Avatar

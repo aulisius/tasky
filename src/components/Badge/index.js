@@ -6,13 +6,14 @@ const Badge = ({text, color = 'black'}) => {
         borderRadius: '10%',
         fontSize: '1em',
         display: 'inline',
-        padding: '1px 5px',
+        padding: '2px 5px',
         margin: '1px 1px',
-        color: color
+        background: color,
+        color: 'white'
     }
     return (
         <div style={style}>
-            {text}
+            {text.toUpperCase()}
         </div>
     )
 }

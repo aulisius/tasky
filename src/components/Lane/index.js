@@ -1,13 +1,15 @@
 import React from 'react'
 
 import Task from '../Task'
+import Badge from '../Badge'
 
-const Lane = ({tasks}) => {
+const Lane = ({tasks, title = 'Title'}) => {
     const style = {
         lane: {
             display: 'inline-block',
             margin: '10px',
-            border: '1px solid',
+            border: '5px solid rgba(0, 0, 0, 0)',
+            boxShadow: '4px 4px 8px 4px rgba(0,0,0,0.1)',
             padding: '10px'
         },
         taskList: {
@@ -16,11 +18,16 @@ const Lane = ({tasks}) => {
         },
         taskItem: {
             margin: '5px'
+        },
+        laneName: {
+            textAlign: 'center'
         }
     }
     return (
         <div style={style.lane}>
-            <header> Lane name </header>
+            <div style={style.laneName}>
+            <Badge text={title} />
+            </div>
             <hr/>
             <ul style={style.taskList} >
                 {
