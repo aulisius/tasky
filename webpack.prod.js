@@ -30,6 +30,11 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            react: __dirname + '/node_modules/react'
+        }
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {

@@ -4,7 +4,7 @@
   "description": "Task manager for small teams",
   "scripts": {
     "start": "node server/app.js",
-    "build:dev": "webpack --config webpack.dev.js",
+    "build:dev": "webpack --config webpack.dev.js --watch",
     "build:prod": "webpack --config webpack.prod.js",
     "start:book": "start-storybook -p 6767",
     "deploy:book": "storybook-to-ghpages"
@@ -72,6 +72,7 @@
     "react-addons-create-fragment": "^15.3.0",
     "react-css-modules": "^3.7.10",
     "react-dom": "15.3.0",
+    "react-modal": "^1.4.0",
     "react-modal-dialog": "^3.0.2",
     "react-router": "2.6.1"
   }

@@ -33,6 +33,12 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            'react': __dirname + '/node_modules/react',
+            'react/addons': __dirname + '/node_modules/react/addons'
+        }
+    },
     // postcss: [
     //     require('autoprefixer')
     // ],

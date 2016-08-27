@@ -1,8 +1,10 @@
 import React from 'react'
+import Modal from 'react-modal'
 
 import Avatar from '../Avatar'
-import TaskHeader from '../TaskHeader'
+import { TaskHeader, TaskHeaderExtended } from '../TaskHeader'
 import Contributors from '../Contributors'
+import Hidden from '../Hidden'
 
 const style = {
     taskMini: {
@@ -15,35 +17,73 @@ const style = {
         textOverflow: 'ellipsis',
         padding: '10px'
     },
-    taskFull: {
-        boxShadow: '4px 4px 8px 4px rgba(0,0,0,0.2)',
-        width: '640px',
-        padding: '50px'
-    },
     btn: {
         float: 'left'
+    },
+    modalStyle: {
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+        },
+        content: {
+            position: 'absolute',
+            margin: '80px',
+            border: '1px solid #ccc',
+            background: '#fff',
+            overflow: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            borderRadius: '4px',
+            boxShadow: '4px 4px 8px 4px rgba(0,0,0,0.2)',
+            width: '640px',
+            outline: 'none'
+        }
     }
 }
 
-const Task = (props) => {
+class Task extends React.Component {
 
-    const miniView = (
-        <div style={style.taskMini}>
-            <TaskHeader {...props} />
-            <hr/>
-            <button style={style.btn} > Status </button>
-            <Contributors users={props.contributors} />
-        </div>
-    )
+    constructor(props) {
+        super(props)
 
-    const fullView = (
-        <div style={style.taskFull}>
-            <TaskHeader {...props} />
-            <hr />
-        </div>
-    )
+        this.state = {
+            showModal: false
+        }
 
-    return props.full ? fullView : miniView
+        this.handleClose = this.handleClose.bind(this)
+        this.handleOpen = this.handleOpen.bind(this)
+    }
+
+    handleClose() {
+        this.setState({ showModal: false })
+    }
+
+    handleOpen() {
+        this.setState({ showModal: true })
+    }
+
+    render() {
+        return (
+            <div>
+                <div style={style.taskMini}>
+                    <TaskHeader {...this.props} />
+                    <hr/>
+                    <button style={style.btn} onClick={this.handleOpen} > Expand </button>
+                    <Contributors users={this.props.contributors} />
+                </div>
+                <Modal
+                    style={style.modalStyle}
+                    isOpen={this.state.showModal}
+                    onRequestClose={this.handleClose}
+                    >
+                    <TaskHeaderExtended {...this.props} />
+                </Modal>
+            </div>
+        )
+    }
 }
 
 export default Task

@@ -1,5 +1,4 @@
 import React from 'react'
-import {ModalContainer, ModalDialog} from 'react-modal-dialog'
 
 import Lane from '../../components/Lane'
 import Hidden from '../../components/Hidden'
@@ -26,9 +25,7 @@ class Home extends React.Component {
         super(props)
 
         this.state = {
-            tasks: [],
-            fullView : false,
-            active: {}
+            tasks: []
         }
 
     }
@@ -38,12 +35,14 @@ class Home extends React.Component {
             .then(res => res.json())
             .then(tasks => Promise.all(tasks.map(task => userService.getUser(task.assignee)
                 .then(assignee => {
+                    assignee.type = 'Assignee'
                     if (task.assignee === task.assigner) {
                         task.contributors = [assignee]
                         return task
                     }
                     return userService.getUser(task.assigner)
                         .then(assigner => {
+                            assigner.type = 'Assigner'
                             task.contributors = [assignee, assigner]
                             return task
                         })
@@ -54,12 +53,10 @@ class Home extends React.Component {
             .catch(console.err)
     }
 
-    handleClick = () => this.setState({ fullView: true })
-
-    handleClose = () => this.setState({ fullView: false })
 
     render() {
         let { tasks } = this.state
+        console.log(tasks)
         let pending = tasks.filter(task => task.status === 'PENDING')
         let current = tasks.filter(task => task.status === 'CURRENT')
         let completed = tasks.filter(task => task.status === 'COMPLETED')
@@ -77,13 +74,6 @@ class Home extends React.Component {
                 </Hidden>
                 <Hidden hide={completed.length === 0}>
                     <Lane title="Completed" tasks={completed} />
-                </Hidden>
-                <Hidden>
-                    <ModalContainer onClose={this.handleClose}>
-                        <ModalDialog onClose={this.handleClose}>
-                            <Task {...this.state.active} full={true} />
-                        </ModalDialog>
-                    </ModalContainer>
                 </Hidden>
             </div>
         );
