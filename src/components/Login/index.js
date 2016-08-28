@@ -18,7 +18,7 @@ class Login extends React.Component {
                             let { email, picture, name } = node
                             userService
                             .getUser(email)
-                            .then(data => data || userService.addUser(node))
+                            .then(data => (data === {}) ? userService.addUser(node) : data)
                             .then((user) => {
                                 sessionStorage.setItem('tasky-user-logged-in', email)
                                 this.context.router.push('/home')
