@@ -24,7 +24,12 @@ router.get(
     '/:email',
     ctx => db.users
         .findByEmail(ctx.params.email)
-        .then(data => ctx.body = data || JSON.stringify({}))
+        .then(data => {
+            if (data)
+                ctx.response.body = data
+            else
+                ctx.response.body = JSON.stringify({})
+        })
         .then(() => ctx.status = 200)
         .catch(console.error)
 )
