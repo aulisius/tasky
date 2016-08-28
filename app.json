@@ -1,0 +1,6 @@
+{
+  "name": "tasky-techofes",
+  "description": "Task manager",
+  "repository": "https://github.com/faizaanceg/tasky",
+  "keywords": ["node", "koa", "react", "pgsql"]
+}

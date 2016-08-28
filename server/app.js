@@ -36,4 +36,4 @@ app.use(logger())
     .use(users.routes())
     .use(router.routes())
 
-app.listen(3000, () => console.log('Server started'))
+app.listen(process.env.PORT, () => console.log('Server started'))
