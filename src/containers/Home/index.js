@@ -4,6 +4,7 @@ import Lane from '../../components/Lane'
 import Hidden from '../../components/Hidden'
 
 import userService from '../../services/userService'
+import taskService from '../../services/taskService'
 
 [
     {
@@ -16,8 +17,6 @@ import userService from '../../services/userService'
     }
 ]
 
-
-//TODO create TaskExtendedView and show it in modal
 //TODO add ability to change state of task
 class Home extends React.Component {
 
@@ -28,11 +27,13 @@ class Home extends React.Component {
             tasks: []
         }
 
+        this.onChange = this.onChange.bind(this)
+
     }
 
     componentDidMount() {
-        fetch('/api/tasks')
-            .then(res => res.json())
+        taskService
+            .getTasks()
             .then(tasks => Promise.all(tasks.map(task => userService.getUser(task.assignee)
                 .then(assignee => {
                     assignee.type = 'Assignee'
@@ -49,17 +50,31 @@ class Home extends React.Component {
                 })
             ))
             )
-            .then(values => this.setState({ tasks: values }))
-            .catch(console.err)
+            .then(tasks => this.setState({ tasks: tasks }))
+            .catch(console.error)
     }
 
+    onChange(id, status) {
+        taskService
+            .updateTask(id, status)
+            .then(() => {
+                let { tasks } = this.state
+                tasks.forEach(task => {
+                    if (task.id === id) {
+                        task.status = status.toUpperCase()
+                    }
+                })
+                this.setState({ tasks: tasks })
+            })
+            .catch(console.error)
+    }
 
     render() {
         let { tasks } = this.state
         console.log(tasks)
-        let pending = tasks.filter(task => task.status === 'PENDING')
-        let current = tasks.filter(task => task.status === 'CURRENT')
-        let completed = tasks.filter(task => task.status === 'COMPLETED')
+        const pending = tasks.filter(task => task.status === 'PENDING')
+        const current = tasks.filter(task => task.status === 'CURRENT')
+        const completed = tasks.filter(task => task.status === 'COMPLETED')
         return (
             <div style={{
                 width: '1000px',
@@ -67,13 +82,13 @@ class Home extends React.Component {
                 margin: '0 auto'
             }}>
                 <Hidden hide={pending.length === 0}>
-                    <Lane title="Pending" tasks={pending} />
+                    <Lane title="Pending" tasks={pending} onChange={this.onChange} />
                 </Hidden>
                 <Hidden hide={current.length === 0}>
-                    <Lane title="Current" tasks={current} />
+                    <Lane title="Current" tasks={current} onChange={this.onChange} />
                 </Hidden>
                 <Hidden hide={completed.length === 0}>
-                    <Lane title="Completed" tasks={completed} />
+                    <Lane title="Completed" tasks={completed} onChange={this.onChange} />
                 </Hidden>
             </div>
         );

@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
     entry: './src/index.js',
@@ -41,18 +40,8 @@ module.exports = {
                 NODE_ENV: JSON.stringify('production')
             }
         }),
-        new HtmlWebpackPlugin({
-            title: 'Tasky',
-            inject: false,
-            template: require('html-webpack-template'),
-            appMountId: 'app',
-            mobile: true
-            // window: {
-            //     env: {
-            //         apiHost: 'http://myapi.com/api/v1'
-            //     }
-            // }
-        }),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.OccurenceOrderPlugin(true),
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false,

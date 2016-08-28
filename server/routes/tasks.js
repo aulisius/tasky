@@ -20,6 +20,22 @@ router.get(
         .then(() => ctx.status = 200)
 )
 
+router.put(
+    '/:id/:status',
+    ctx => db.tasks
+        .update({ id: ctx.params.id, status: ctx.params.status.toUpperCase() })
+        .then(() => ctx.status = 201)
+        .catch(console.error)
+)
+
+router.get(
+    '/:id',
+    ctx => db.tasks
+        .findById(ctx.params.id)
+        .then((data) => ctx.body = JSON.stringify(data))
+        .then(() => ctx.status = 200)
+)
+
 router.get(
     '/assignee/:email',
     ctx => db.tasks
